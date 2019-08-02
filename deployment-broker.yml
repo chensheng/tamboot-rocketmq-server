@@ -1,0 +1,88 @@
+apiVersion: apps/v1beta2
+kind: Deployment
+metadata:
+  labels:
+    app: tamboot-rocketmq-broker
+    environment: test
+    tier: middleware
+  name: tamboot-rocketmq-brokers
+  namespace: middleware
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tamboot-rocketmq-broker
+  template:
+    metadata:
+      labels:
+        app: tamboot-rocketmq-broker
+    spec:
+      containers:
+      - command:
+        - mqbroker
+        - '-c'
+        - '/usr/local/rocketmq/custom-conf/broker.conf'
+        env:
+        - name: LANG
+          value: C.UTF-8
+        - name: JAVA_HOME
+          value: /usr/lib/jvm/java-1.8-openjdk
+        - name: JAVA_XMS
+          value: 128m
+        - name: JAVA_XMX
+          value: 512m
+        - name: JAVA_XMN
+          value: 128m
+        image: >-
+          registry-vpc.cn-shenzhen.aliyuncs.com/registry-cobroo/tamboot-rocketmq-server:1.0.0-SNAPSHOT
+        imagePullPolicy: Always
+        name: tamboot-rocketmq-broker
+        resources:
+          requests:
+            cpu: 100m
+            memory: 64Mi
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /root/logs
+          name: volume-logs
+        - mountPath: /root/store
+          name: volume-store
+        - mountPath: /usr/local/rocketmq/custom-conf
+          name: volume-config
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - emptyDir: {}
+        name: volume-logs
+      - name: volume-store
+        persistentVolumeClaim:
+          claimName: rocketmq-broker-store
+      - configMap:
+          defaultMode: 420
+          name: tamboot-rocketmq-broker-config
+        name: volume-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tamboot-rocketmq-broker-service
+  namespace: middleware
+spec:
+  ports:
+  - name: tamboot-rocketmq-broker-service-10909
+    port: 10909
+    protocol: TCP
+    targetPort: 10909
+  - name: tamboot-rocketmq-broker-service-10911
+    port: 10911
+    protocol: TCP
+    targetPort: 10911
+  selector:
+    app: tamboot-rocketmq-broker
+  sessionAffinity: None
+  type: ClusterIP
