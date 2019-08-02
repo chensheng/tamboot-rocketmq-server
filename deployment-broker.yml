@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   labels:
     app: tamboot-rocketmq-broker
-    environment: test
+    environment: product
     tier: middleware
   name: tamboot-rocketmq-brokers
   namespace: middleware
