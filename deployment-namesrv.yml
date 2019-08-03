@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app: tamboot-rocketmq-namesrv
-    environment: product
     tier: middleware
   name: tamboot-rocketmq-namesrv
   namespace: middleware
@@ -32,7 +31,7 @@ spec:
         - name: JAVA_XMN
           value: 128m
         image: >-
-          registry-vpc.cn-shenzhen.aliyuncs.com/registry_tam/tamboot-rocketmq-namesrv:1.0.0-SNAPSHOT
+          registry-vpc.cn-shenzhen.aliyuncs.com/registry_tam/tamboot-rocketmq-server:1.0.0-SNAPSHOT
         imagePullPolicy: Always
         name: tamboot-rocketmq-namesrv
         resources:
@@ -55,7 +54,7 @@ metadata:
   namespace: middleware
 spec:
   ports:
-  - name: tamboot-rocketmq-namesrv-service
+  - name: tcp
     port: 9876
     protocol: TCP
     targetPort: 9876
