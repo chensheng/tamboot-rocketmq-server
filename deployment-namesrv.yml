@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app: tamboot-rocketmq-namesrv
-    tier: middleware
   name: tamboot-rocketmq-namesrv
   namespace: middleware
 spec:
@@ -15,6 +14,7 @@ spec:
     metadata:
       labels:
         app: tamboot-rocketmq-namesrv
+        buildVersion: build-${BUILD_ID}
     spec:
       containers:
       - command:

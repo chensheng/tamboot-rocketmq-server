@@ -3,7 +3,6 @@ kind: Deployment
 metadata:
   labels:
     app: tamboot-rocketmq-broker
-    tier: middleware
   name: tamboot-rocketmq-broker
   namespace: middleware
 spec:
@@ -15,6 +14,7 @@ spec:
     metadata:
       labels:
         app: tamboot-rocketmq-broker
+        buildVersion: build-${BUILD_ID}
     spec:
       containers:
       - command:
@@ -73,10 +73,6 @@ metadata:
   namespace: middleware
 spec:
   ports:
-  - name: tcp-10909
-    port: 10909
-    protocol: TCP
-    targetPort: 10909
   - name: tcp-10911
     port: 10911
     protocol: TCP
