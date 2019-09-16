@@ -33,7 +33,7 @@ spec:
         - name: JAVA_XMN
           value: 128m
         image: >-
-          registry-vpc.cn-shenzhen.aliyuncs.com/registry_tam/tamboot-rocketmq-server:1.0.0-SNAPSHOT
+          registry.cn-shenzhen.aliyuncs.com/registry_tam/tamboot-rocketmq-server:1.0.0-SNAPSHOT
         imagePullPolicy: Always
         name: tamboot-rocketmq-broker
         resources:
